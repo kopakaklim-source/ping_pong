@@ -8,7 +8,7 @@ background = transform.scale(image.load('assets/table.png'), (700, 500))
 
 game = True
 clock = time.Clock()
-FPS = 60
+FPS = 60 #это фпс
 
 while True:
     clock.tick(FPS)
