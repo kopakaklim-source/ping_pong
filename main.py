@@ -2,9 +2,9 @@ from pygame import *
 import sys
 import pygame
 init()
-main_win = display.set_mode((700, 500))
+main_win = display.set_mode((800, 500))
 display.set_caption('ping_pong')
-background = transform.scale(image.load('assets/table.png'), (700, 500))
+background = transform.scale(image.load('assets/table.png'), (800, 500))
 
 game = True
 clock = time.Clock()
