@@ -25,6 +25,7 @@ counter_for_flag = 0
 
 font.init()
 f1 = font.SysFont('Aharoni', 150)
+f2 = font.SysFont('Aharoni', 200)
 
 class GameSprite(sprite.Sprite):
     def __init__(self, player_image, player_x, player_y, player_speed, image_height, image_width):
@@ -66,47 +67,67 @@ ball1 = Ball('assets/ball.png', 400, 250, z, 70, 70)
 
 
 while True:
-    if counter_for_flag >= 90:
-        flag_for_racket = True
-        counter_for_flag = 0
-    else:
-        counter_for_flag += 1
     clock.tick(FPS)
-    for event in pygame.event.get(): #событие
+    for event in pygame.event.get():  # событие
         if event.type == QUIT:
             quit()
             sys.exit()
-    pygame.draw.rect(main_win, (255, 255, 255), racket1.rect, 0)
-    pygame.draw.rect(main_win, (255, 255, 255), racket2.rect, 0)
-    pygame.draw.rect(main_win, (255, 255, 255), ball1.rect, 0)
-    main_win.blit(background, (0, 0))    #первая отрисовка
-    ball1.rect.x += speed_x
-    ball1.rect.y += speed_y
-    racket1.update()
-    racket2.update()
-    ball1.update()
-    main_win.blit(f1.render(str(h) + ':' + str(g), True, (0, 0, 0)), (327, 210))
-    if ball1.rect.y > 390 or ball1.rect.y < 70:
-        if flag_for_wall:
-            speed_y *= -1
-            flag_for_wall = False
-    if sprite.collide_rect(ball1, racket1) or sprite.collide_rect(ball1, racket2):
-        if flag_for_racket:
-            speed_x += 1
-            speed_x *= -1
-            flag_for_racket = False
-        flag_for_wall = True
-    if ball1.rect.x > 870:
-        ball1.rect.x = 400
-        ball1.rect.y = 250
-        h += 1
-        print('Счет левой ракетки: ', h)
+    if game == True:
+        if counter_for_flag >= 90:
+            flag_for_racket = True
+            counter_for_flag = 0
+        else:
+            counter_for_flag += 1
+        pygame.draw.rect(main_win, (255, 255, 255), racket1.rect, 0)
+        pygame.draw.rect(main_win, (255, 255, 255), racket2.rect, 0)
+        pygame.draw.rect(main_win, (255, 255, 255), ball1.rect, 0)
+        main_win.blit(background, (0, 0))    #первая отрисовка
+        ball1.rect.x += speed_x
+        ball1.rect.y += speed_y
+        racket1.update()
+        racket2.update()
+        ball1.update()
+        main_win.blit(f1.render(str(h), True, (0, 255, 0)), (340, 210))
+        main_win.blit(f1.render(str(g), True, (255, 0, 0)), (415, 210))
+        if ball1.rect.y > 390 or ball1.rect.y < 70:
+            if flag_for_wall:
+                speed_y *= -1
+                flag_for_wall = False
+        if sprite.collide_rect(ball1, racket1) or sprite.collide_rect(ball1, racket2):
+            if flag_for_racket:
+                speed_x += 1
+                speed_x *= -1
+                flag_for_racket = False
+            flag_for_wall = True
+        if ball1.rect.x > 870:
+            ball1.rect.x = 400
+            ball1.rect.y = 250
+            h += 1
 
-    if ball1.rect.x < -70:
-        ball1.rect.x = 400
-        ball1.rect.y = 250
-        g += 1
-        print('Счет правой ракетки: ', g)
+        if ball1.rect.x < -70:
+            ball1.rect.x = 400
+            ball1.rect.y = 250
+            g += 1
+        if h == 2:
+            main_win.blit(background, (0, 0))
+            main_win.blit(f1.render(str(h), True, (0, 255, 0)), (340, 210))
+            main_win.blit(f1.render(str(g), True, (255, 0, 0)), (415, 210))
+            main_win.blit(f2.render('Green Won', True, (0, 255, 0)), (30, 100))
+            ball1.rect.x = -100
+            ball1.rect.y = 700
+            racket1.update()
+            racket2.update()
+            game = False
+        elif g == 2:
+            main_win.blit(background, (0, 0))
+            main_win.blit(f1.render(str(g), True, (255, 0, 0)), (415, 210))
+            main_win.blit(f1.render(str(h), True, (0, 255, 0)), (340, 210))
+            main_win.blit(f1.render('Red Won', True, (255, 0, 0)), (200, 100))
+            ball1.rect.x = -100
+            ball1.rect.y = 700
+            racket1.update()
+            racket2.update()
+            game = False
     display.update()
 
 
