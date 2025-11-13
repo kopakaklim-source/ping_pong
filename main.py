@@ -15,16 +15,16 @@ FPS = 60 #это фпс
 speed_x = randint(4, 6)
 speed_y = 1.5
 
-flag = True
-flag1 = True
+flag_for_wall = True
+flag_for_racket = True
 
 h = 0
 g = 0
 z = 0
+counter_for_flag = 0
 
 font.init()
-f1 = font.SysFont('Aharoni', 50)
-f2 = font.SysFont('Aharoni', 50)
+f1 = font.SysFont('Aharoni', 150)
 
 class GameSprite(sprite.Sprite):
     def __init__(self, player_image, player_x, player_y, player_speed, image_height, image_width):
@@ -66,7 +66,11 @@ ball1 = Ball('assets/ball.png', 400, 250, z, 70, 70)
 
 
 while True:
-    flag1 = True
+    if counter_for_flag >= 90:
+        flag_for_racket = True
+        counter_for_flag = 0
+    else:
+        counter_for_flag += 1
     clock.tick(FPS)
     for event in pygame.event.get(): #событие
         if event.type == QUIT:
@@ -81,16 +85,17 @@ while True:
     racket1.update()
     racket2.update()
     ball1.update()
+    main_win.blit(f1.render(str(h) + ':' + str(g), True, (0, 0, 0)), (327, 210))
     if ball1.rect.y > 390 or ball1.rect.y < 70:
-        if flag:
+        if flag_for_wall:
             speed_y *= -1
-            flag = False
+            flag_for_wall = False
     if sprite.collide_rect(ball1, racket1) or sprite.collide_rect(ball1, racket2):
-        if flag1:
+        if flag_for_racket:
             speed_x += 1
             speed_x *= -1
-            flag1 = False
-        flag = True
+            flag_for_racket = False
+        flag_for_wall = True
     if ball1.rect.x > 870:
         ball1.rect.x = 400
         ball1.rect.y = 250
